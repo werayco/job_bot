@@ -152,7 +152,7 @@ import streamlit as st
 st.title("Job Search Assistant")
 st.write("### Enter your query to find job details:")
 
-user_input = st.text_input("Enter a job title, location, or both:")
+user_input = st.text_input("Input your query e.g i need a virtual assistant job located in japan")
 
 if st.button("Search Jobs"):
     if user_input.strip(): 
