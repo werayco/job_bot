@@ -147,4 +147,21 @@ def process(query):
     response_ot = chain_2.invoke({"input": data})
     return (response_ot.content) # This is the final response
 
-print(process("machine learning engineer in lagos"))
+import streamlit as st
+
+st.title("Job Search Assistant")
+st.write("### Enter your query to find job details:")
+
+user_input = st.text_input("Enter a job title, location, or both:")
+
+if st.button("Search Jobs"):
+    if user_input.strip(): 
+        st.write("Processing your request...")
+        try:
+            response = process(user_input)
+            st.write("### Job Search Results:")
+            st.write(response)
+        except Exception as e:
+            st.error(f"An error occurred while processing your request: {e}")
+    else:
+        st.warning("Please enter a valid query!")
