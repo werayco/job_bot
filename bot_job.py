@@ -1,3 +1,4 @@
+import streamlit as st
 from langchain_groq import ChatGroq
 import time
 from typing import List, Dict
@@ -12,7 +13,7 @@ from urllib.parse import urlencode
 import requests
 from bs4 import BeautifulSoup
 
-api_key = os.getenv("API_KEY")
+api_key = st.secrets["API_KEY"]
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
@@ -32,7 +33,7 @@ def extract_keypoint_fnc(query:str):
     '''
     This function is used for extracting the key points from the query
     '''
-    llm = ChatGroq(model="llama-3.3-70b-versatile",api_key="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")
+    llm = ChatGroq(model="llama-3.3-70b-versatile",api_key=api_key)
     parser = JsonOutputParser(pydantic_object=output)
 
     template = """
@@ -127,7 +128,7 @@ def process(query):
     job_title, _, _, _, country = extract_keypoint_fnc(query=query)
     job_country = job_title + country
     data = scrape_flex_jobs(job_country)
-    llm = ChatGroq(model="llama-3.3-70b-versatile",api_key="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")
+    llm = ChatGroq(model="llama-3.3-70b-versatile",api_key=api_key)
 
     formatted_prompt = """
     You are a job search assistant Created by TheSlimPrep. Your task is to check through the input: {input}, which is a list of dictionaries containing job details.
@@ -147,7 +148,6 @@ def process(query):
     response_ot = chain_2.invoke({"input": data})
     return (response_ot.content) # This is the final response
 
-import streamlit as st
 
 st.title("Job Search Assistant")
 st.write("### Enter your query to find job details:")
